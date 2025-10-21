@@ -1,0 +1,414 @@
+{
+  "info": {
+    "_postman_id": "e4f996fc-70fb-4767-96d5-52afec5add09",
+    "name": "коллекция",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "47482555"
+  },
+  "item": [
+    {
+      "name": "получение токена",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "let json_Data = pm.response.json();\r",
+              "pm.test(\"ответ содержит user_id\",function(){\r",
+              "    pm.expect(json_Data).to.property(\"user_id\")\r",
+              "});\r",
+              "\r",
+              "pm.environment.set(\"access\", json_Data.access);\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "reqres-free-v1",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"sherlock\",\r\n\"password\":\"password1\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}api/token/",
+          "host": [
+            "{{base_url}}api"
+          ],
+          "path": [
+            "token",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Получение данных",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "var schema = {\r",
+              "    \"type\": \"object\",\r",
+              "    \"required\": [\"username\", \"email\"],\r",
+              "    \"properties\":{\r",
+              "         \"username\":{ \"type\":\"string\"},\r",
+              "        \"email\": { \"type\": \"string\" },\r",
+              "        \"flag\": { \"type\": \"null\" },\r",
+              "        \"is_privileged\": { \"type\": \"boolean\" }\r",
+              "    }\r",
+              "};\r",
+              "var jsonData = pm.response.json();\r",
+              "pm.test(\"JSON Schema is valid\", function() {\r",
+              "    var isValid = tv4.validate(jsonData, schema);\r",
+              "    pm.expect(isValid).to.be.true;\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "reqres-free-v1",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{base_url}}profile/1/",
+          "host": [
+            "{{base_url}}profile"
+          ],
+          "path": [
+            "1",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Получение данных (neg 404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "let user_id = Math.random(Math.random * 5000); \r",
+              "pm.environment.set(\"user_id\", user_id);\r",
+              " "
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "reqres-free-v1",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{base_url}}profile/1/={{user_id}}",
+          "host": [
+            "{{base_url}}profile"
+          ],
+          "path": [
+            "1",
+            "={{user_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Получение данных (neg 401)",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "pm.request.headers.add({\r",
+              "    key: \"Authorization\", \r",
+              "    value: \"Bearer invalid_token\"\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test (\"status code 401\", function(){\r",
+              "    pm.response.to.have.status(401)\r",
+              "})\r",
+              "var schema = { \r",
+              "    \"type\": \"object\",\r",
+              "    \"properties\": {\r",
+              "        \"detail\": { \"type\": \"string\" },\r",
+              "        \"code\": { \"type\": \"string\" },\r",
+              "        \"messages\": {\r",
+              "            \"type\": \"array\",\r",
+              "            \"items\": {\r",
+              "                \"type\":\"object\",\r",
+              "                \"properties\":{\r",
+              "                    \"token_class\": { \"type\": \"string\" },\r",
+              "                    \"token_type\": { \"type\": \"string\" },\r",
+              "                    \"message\": { \"type\": \"string\" }\r",
+              "                }\r",
+              "        \r",
+              "            }}}}\r",
+              "            var jsonData = pm.response.json();\r",
+              "pm.test(\"JSON Schema is valid\", function() {\r",
+              "    var isValid = tv4.validate(jsonData, schema);\r",
+              "    pm.expect(isValid).to.be.true;\r",
+              "});\r",
+              "pm.test(\"code is token_not_valid\", function () {\r",
+              "    pm.expect(pm.response.json().code).to.eql(\"token_not_valid\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "reqres-free-v1",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{base_url}}profile/1/",
+          "host": [
+            "{{base_url}}profile"
+          ],
+          "path": [
+            "1",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Получение данных (neg 400)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test (\"status code 400\", function(){\r",
+              "    pm.response.to.have.status(400)\r",
+              "})\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "let fakeEmail = `test400.com`;\r",
+              "pm.environment.set(\"invalid_email\", fakeEmail);\r",
+              "console.log(\"Сгенерирован несуществующий email:\", fakeEmail);"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "reqres-free-v1",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{base_url}}profile/1/?email={{invalid_email}}",
+          "host": [
+            "{{base_url}}profile"
+          ],
+          "path": [
+            "1",
+            ""
+          ],
+          "query": [
+            {
+              "key": "email",
+              "value": "{{invalid_email}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://six-skills.ru/",
+      "type": "string"
+    }
+  ]
+}
