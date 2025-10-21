@@ -1,0 +1,1 @@
+[Граничные знвчения Payment system](https://docs.google.com/document/d/16moO1xNRmeRKUkuRs3I3PVCPf0Xfmph_K6yabFWx5PE/edit?tab=t.0)
