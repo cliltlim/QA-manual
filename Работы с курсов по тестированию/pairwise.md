@@ -1,0 +1,1 @@
+[применение pairwise](https://docs.google.com/document/d/1A52T7S-SAQMLP8ow_iXOlS2y632VvbV8z1REbjeF1rw/edit?tab=t.0)
