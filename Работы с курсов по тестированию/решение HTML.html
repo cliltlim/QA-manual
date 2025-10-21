@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Учу HTML</title>
+    <style>
+        .link-button {
+     display: block;
+     width: 200px;
+     height: 50px;
+     line-height: 50px;
+     margin: 10px 0;
+     text-align: center;
+     text-decoration: none;
+     border-radius: 6px;
+     font-family: Arial, sans-serif;
+     font-size: 16px;
+     color: white;
+     background: darkblue;
+     border: 2px solid red;
+     transition: 0.3s;
+   }
+
+   .link-button:hover {
+     background: navy;
+   }
+    </style>
+    <script>
+        const changetext = function(){
+            year.textContent = "Ошибка. Сейчас 2025 год"
+
+        }
+    </script>
+</head>
+<body>
+<header><h2>Пройди по ссылке</h2></header>
+
+<a href="https://www.google.com/" target="_blank" class="link-button">Google</a>
+<a href="https://ya.ru/" target="_blank" class="link-button">Яндекс</a>
+<a href="https://www.bing.com/" target="_blank" class="link-button">Bing</a>
+
+<header><h2>Твои хобби</h2></header>
+<label>
+    <input type="checkbox" name="agree" required>
+    Кино
+    <input type="checkbox" name="agree" required>
+    Музыка
+    <input type="checkbox" name="agree" required>
+    Спорт
+</label><br><br>
+</label>
+<div>
+    <h2>Какой сейчас год</h2>
+    <p id=year> Сейчас 2021 год</p>
+    <button onclick="changetext()">проверить</button>
+</div>
+
+
+</body>
+</html>
